@@ -1,0 +1,104 @@
+{
+  "id": "tower",
+  "name": "Wizard's Tower",
+  "description": "A mysterious tower filled with magical creatures and enchanted guardians.",
+  "difficulty": "Easy",
+  "path": "maps/tower_map.tmx",
+  "starting_position": {
+    "x": 16,
+    "y": 10
+  },
+  "wall_tiles": [
+    0
+  ],
+  "player": {
+    "name": "Apprentice Mage",
+    "image": "images/player.png",
+    "health": 5,
+    "items": {
+      "attack": {
+        "name": "Apprentice Wand",
+        "modifier": 1
+      },
+      "defense": {
+        "name": "Enchanted Robes",
+        "modifier": 1
+      },
+      "heal": {
+        "name": "Mana Potion",
+        "modifier": 1
+      }
+    },
+    "currency": 50,
+    "description": "A young mage seeking knowledge and magical artifacts.",
+    "icon": "images/player_icon.png"
+  },
+  "enemies": [
+    {
+      "name": "Animated Broom",
+      "image": "images/enemy_0_animated_broom.png",
+      "health": 1,
+      "items": {
+        "attack": {
+          "name": "Bristle Sweep",
+          "modifier": 1
+        }
+      },
+      "position": {
+        "x": 4,
+        "y": 13
+      },
+      "currency": 15,
+      "description": "A magical broom enchanted to clean the tower and chase away intruders.",
+      "icon": "images/enemy_0_animated_broom_icon.png"
+    },
+    {
+      "name": "Stone Gargoyle",
+      "image": "images/enemy_1_stone_gargoyle.png",
+      "health": 2,
+      "items": {
+        "attack": {
+          "name": "Stone Claws",
+          "modifier": 2
+        },
+        "defense": {
+          "name": "Stone Skin",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 15,
+        "y": 10
+      },
+      "currency": 25,
+      "description": "A guardian statue that comes to life when intruders approach.",
+      "icon": "images/enemy_1_stone_gargoyle_icon.png"
+    },
+    {
+      "name": "Tower Guardian",
+      "image": "images/enemy_2_tower_guardian.png",
+      "health": 3,
+      "items": {
+        "attack": {
+          "name": "Arcane Staff",
+          "modifier": 2
+        },
+        "defense": {
+          "name": "Magical Barrier",
+          "modifier": 1
+        },
+        "heal": {
+          "name": "Healing Runes",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 24,
+        "y": 14
+      },
+      "currency": 30,
+      "description": "A powerful construct that protects the tower's magical secrets.",
+      "icon": "images/enemy_2_tower_guardian_icon.png"
+    }
+  ]
+}

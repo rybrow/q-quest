@@ -1,0 +1,126 @@
+{
+  "id": "sewers",
+  "name": "City Sewers",
+  "description": "The dark, winding sewers beneath the city, home to all manner of foul creatures.",
+  "difficulty": "Hard",
+  "path": "maps/sewers_map.tmx",
+  "starting_position": {
+    "x": 16,
+    "y": 10
+  },
+  "wall_tiles": [
+    0
+  ],
+  "player": {
+    "name": "Sewer Hunter",
+    "image": "images/player.png",
+    "health": 5,
+    "items": {
+      "attack": {
+        "name": "Harpoon",
+        "modifier": 2
+      },
+      "defense": {
+        "name": "Reinforced Coat",
+        "modifier": 2
+      },
+      "heal": {
+        "name": "Purification Tonic",
+        "modifier": 2
+      }
+    },
+    "currency": 100,
+    "description": "A hardened hunter who tracks dangerous creatures through the city's underbelly.",
+    "icon": "images/player_icon.png"
+  },
+  "enemies": [
+    {
+      "name": "Giant Rat",
+      "image": "images/enemy_0_giant_rat.png",
+      "health": 2,
+      "items": {
+        "attack": {
+          "name": "Disease-ridden Teeth",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 4,
+        "y": 13
+      },
+      "currency": 15,
+      "description": "An oversized rodent mutated by the toxic waste in the sewers.",
+      "icon": "images/enemy_0_giant_rat_icon.png"
+    },
+    {
+      "name": "Sewer Slime",
+      "image": "images/enemy_1_sewer_slime.png",
+      "health": 4,
+      "items": {
+        "attack": {
+          "name": "Acidic Touch",
+          "modifier": 3
+        },
+        "defense": {
+          "name": "Gelatinous Body",
+          "modifier": 3
+        }
+      },
+      "position": {
+        "x": 15,
+        "y": 10
+      },
+      "currency": 40,
+      "description": "A massive blob of living waste that consumes anything in its path.",
+      "icon": "images/enemy_1_sewer_slime_icon.png"
+    },
+    {
+      "name": "Sewer Cultist",
+      "image": "images/enemy_2_sewer_cultist.png",
+      "health": 3,
+      "items": {
+        "attack": {
+          "name": "Ritual Dagger",
+          "modifier": 3
+        },
+        "defense": {
+          "name": "Dark Robes",
+          "modifier": 2
+        },
+        "heal": {
+          "name": "Forbidden Ritual",
+          "modifier": 3
+        }
+      },
+      "position": {
+        "x": 24,
+        "y": 14
+      },
+      "currency": 75,
+      "description": "A member of a dark cult that performs rituals in the forgotten corners of the sewers.",
+      "icon": "images/enemy_2_sewer_cultist_icon.png"
+    },
+    {
+      "name": "Alligator",
+      "image": "images/enemy_3_alligator.png",
+      "health": 3,
+      "items": {
+        "attack": {
+          "name": "Powerful Jaws",
+          "modifier": 3
+        },
+        "defense": {
+          "name": "Thick Scales",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 20,
+        "y": 8
+      },
+      "currency": 60,
+      "description": "A massive reptile that has made the sewers its hunting ground.",
+      "icon": "images/enemy_3_alligator_icon.png"
+    }
+  ]
+}

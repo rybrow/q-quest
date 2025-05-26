@@ -1,0 +1,13 @@
+This file is a placeholder for the images directory.
+
+For a complete website, you would need to add the following images:
+- header-bg.jpg: A background image for the header section
+- hero-bg.jpg: A background image for the hero section
+- download-bg.jpg: A background image for the download section
+- gameplay.png: An image showing gameplay for the about section
+- screenshot1.png: Combat screen screenshot
+- screenshot2.png: Map navigation screenshot
+- screenshot3.png: Loot collection screenshot
+- screenshot4.png: Character stats screenshot
+
+You can use screenshots from your game or create custom images that match the game's style.

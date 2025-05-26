@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Q-Quest!</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 100px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--light-blue);
+            margin-bottom: 2rem;
+        }
+        
+        .error-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--light-blue);
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .home-btn {
+            background-color: var(--green);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .home-btn:hover {
+            background-color: #00a000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 200, 0, 0.3);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Q-Quest!</h1>
+            <p class="tagline">A Turn Based RPG made with the Amazon Q CLI, powered by Bedrock and Amazon Nova</p>
+        </div>
+    </header>
+
+    <section>
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="fas fa-dungeon"></i>
+            </div>
+            <h1 class="error-title">404 - Page Not Found</h1>
+            <p class="error-message">Oops! It seems you've ventured into an unexplored area of the dungeon. This page doesn't exist or has been moved to another realm.</p>
+            <a href="/" class="home-btn">Return to Main Hall</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>Q-Quest!</h2>
+                    <p>A Turn Based RPG made with the Amazon Q CLI</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/#features">Features</a></li>
+                        <li><a href="/#screenshots">Screenshots</a></li>
+                        <li><a href="/#download">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-tech">
+                    <h3>Powered By</h3>
+                    <ul>
+                        <li>Amazon Q CLI</li>
+                        <li>Amazon Bedrock</li>
+                        <li>Amazon Nova</li>
+                        <li>Pygame</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Q-Quest! All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

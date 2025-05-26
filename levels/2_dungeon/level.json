@@ -1,0 +1,104 @@
+{
+  "id": "dungeon",
+  "name": "Ancient Dungeon",
+  "description": "A dark, forgotten dungeon filled with traps and undead creatures.",
+  "difficulty": "Medium",
+  "path": "maps/dungeon_map.tmx",
+  "starting_position": {
+    "x": 16,
+    "y": 10
+  },
+  "wall_tiles": [
+    0
+  ],
+  "player": {
+    "name": "Dungeon Delver",
+    "image": "images/player.png",
+    "health": 5,
+    "items": {
+      "attack": {
+        "name": "Torch Mace",
+        "modifier": 2
+      },
+      "defense": {
+        "name": "Adventurer's Armor",
+        "modifier": 1
+      },
+      "heal": {
+        "name": "Healing Salve",
+        "modifier": 1
+      }
+    },
+    "currency": 75,
+    "description": "An experienced explorer searching for ancient treasures.",
+    "icon": "images/player_icon.png"
+  },
+  "enemies": [
+    {
+      "name": "Skeleton Warrior",
+      "image": "images/enemy_0_skeleton_warrior.png",
+      "health": 2,
+      "items": {
+        "attack": {
+          "name": "Rusty Sword",
+          "modifier": 1
+        },
+        "defense": {
+          "name": "Broken Shield",
+          "modifier": 1
+        }
+      },
+      "position": {
+        "x": 4,
+        "y": 13
+      },
+      "currency": 20,
+      "description": "The reanimated remains of a fallen warrior, still clutching its ancient weapons.",
+      "icon": "images/enemy_0_skeleton_warrior_icon.png"
+    },
+    {
+      "name": "Dungeon Bat",
+      "image": "images/enemy_1_dungeon_bat.png",
+      "health": 1,
+      "items": {
+        "attack": {
+          "name": "Sharp Fangs",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 15,
+        "y": 10
+      },
+      "currency": 15,
+      "description": "A giant bat that has adapted to the darkness of the dungeon.",
+      "icon": "images/enemy_1_dungeon_bat_icon.png"
+    },
+    {
+      "name": "Dungeon Keeper",
+      "image": "images/enemy_2_dungeon_keeper.png",
+      "health": 3,
+      "items": {
+        "attack": {
+          "name": "Jailer's Flail",
+          "modifier": 2
+        },
+        "defense": {
+          "name": "Heavy Plate",
+          "modifier": 2
+        },
+        "heal": {
+          "name": "Forbidden Elixir",
+          "modifier": 2
+        }
+      },
+      "position": {
+        "x": 24,
+        "y": 14
+      },
+      "currency": 50,
+      "description": "The cruel guardian of the dungeon who has long forgotten his humanity.",
+      "icon": "images/enemy_2_dungeon_keeper_icon.png"
+    }
+  ]
+}

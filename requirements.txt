@@ -1,0 +1,4 @@
+pygame==2.6.0
+pytmx==3.32
+boto3==1.34.0
+Pillow==10.1.0

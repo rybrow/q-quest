@@ -1,0 +1,189 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for Q-Quest! website hosting with S3, CloudFront, and Route53'
+
+Parameters:
+  DomainName:
+    Type: String
+    Description: The domain name for the website (e.g., qquest.example.com)
+    AllowedPattern: (?!-)[a-zA-Z0-9-.]{1,63}(?<!-)
+    ConstraintDescription: Must be a valid domain name
+
+  HostedZoneId:
+    Type: AWS::Route53::HostedZone::Id
+    Description: The Route53 Hosted Zone ID where the DNS record will be created
+
+  CreateWWWAlias:
+    Type: String
+    Description: Create a www alias for the domain (e.g., www.qquest.example.com)
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+
+Resources:
+  # S3 bucket for website content
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref DomainName
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      Tags:
+        - Key: Name
+          Value: !Sub "${DomainName}-website"
+
+  # S3 bucket policy to allow CloudFront access
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 's3:GetObject'
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${WebsiteBucket}/*"
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+
+  # CloudFront Origin Access Control
+  CloudFrontOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${DomainName}-OAC"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # SSL Certificate for HTTPS
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      SubjectAlternativeNames:
+        - !If [CreateWWWAlias, !Sub "www.${DomainName}", !Ref "AWS::NoValue"]
+      ValidationMethod: DNS
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref HostedZoneId
+        - !If
+          - CreateWWWAlias
+          - DomainName: !Sub "www.${DomainName}"
+            HostedZoneId: !Ref HostedZoneId
+          - !Ref "AWS::NoValue"
+
+  # CloudFront distribution
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+          - !If [CreateWWWAlias, !Sub "www.${DomainName}", !Ref "AWS::NoValue"]
+        Origins:
+          - DomainName: !GetAtt WebsiteBucket.RegionalDomainName
+            Id: S3Origin
+            OriginAccessControlId: !GetAtt CloudFrontOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        Enabled: true
+        HttpVersion: http2
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          CachedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          TargetOriginId: S3Origin
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          DefaultTTL: 86400
+          MinTTL: 0
+          MaxTTL: 31536000
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /error.html
+            ErrorCachingMinTTL: 300
+
+  # Route53 DNS record for the domain
+  DomainDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref DomainName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2 # CloudFront hosted zone ID (this is always the same)
+        EvaluateTargetHealth: false
+
+  # Route53 DNS record for www subdomain (if enabled)
+  WWWDNSRecord:
+    Type: AWS::Route53::RecordSet
+    Condition: CreateWWWAlias
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Sub "www.${DomainName}"
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2 # CloudFront hosted zone ID (this is always the same)
+        EvaluateTargetHealth: false
+
+Conditions:
+  CreateWWWAlias: !Equals [!Ref CreateWWWAlias, 'true']
+
+Outputs:
+  WebsiteBucketName:
+    Description: Name of the S3 bucket storing the website content
+    Value: !Ref WebsiteBucket
+
+  CloudFrontDistributionId:
+    Description: ID of the CloudFront distribution
+    Value: !Ref CloudFrontDistribution
+
+  CloudFrontDomainName:
+    Description: Domain name of the CloudFront distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName
+
+  WebsiteURL:
+    Description: URL of the website
+    Value: !Sub "https://${DomainName}"
+
+  WWWWebsiteURL:
+    Description: URL of the website with www prefix
+    Condition: CreateWWWAlias
+    Value: !Sub "https://www.${DomainName}"
+
+  UploadCommand:
+    Description: AWS CLI command to upload website content to S3 bucket
+    Value: !Sub "aws s3 sync ./site s3://${WebsiteBucket} --delete --exclude \"cloudformation-template.yaml\""
+
+  InvalidateCommand:
+    Description: AWS CLI command to invalidate CloudFront cache after uploading content
+    Value: !Sub "aws cloudfront create-invalidation --distribution-id ${CloudFrontDistribution} --paths \"/*\""
