@@ -1,6 +1,17 @@
 # Q-Quest!
 
-A turn-based RPG adventure game made with the Amazon Q CLI, powered by Bedrock and Amazon Nova.
+A turn-based RPG adventure game made with the Amazon Q CLI, Assets powered by Bedrock and Amazon Nova.
+
+## Installing Dependencies
+
+```
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+
+# Run the Game
+python3 run_game.py
+```
 
 ## Game Structure and Flow
 
