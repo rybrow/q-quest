@@ -1,4 +1,6 @@
 import pygame
+import os
+import pytmx
 
 
 WIDTH = 1280
@@ -363,3 +365,103 @@ def draw_segmented_health_bar(surface, x, y, width, height, segments, current_se
 
     # Draw border around entire health bar
     pygame.draw.rect(surface, border_color, (x, y, width, height), 2)
+
+
+def draw_minimap(surface, character_data, player_x, player_y, tmx_data, map_path):
+    """
+    Draw a minimap in the bottom right corner of the screen
+    
+    Args:
+        surface: The main screen surface to draw on
+        character_data: Player character data containing level and enemy info
+        player_x: Current player X position on the map
+        player_y: Current player Y position on the map
+        tmx_data: The loaded TMX map data
+        map_path: Path to the TMX map file
+    """
+    # Import here to avoid circular imports
+    from src.map_renderer import render_map_to_surface
+    
+    # Minimap dimensions and position
+    minimap_size = 200
+    margin = 20
+    minimap_x = WIDTH - minimap_size - margin
+    minimap_y = HEIGHT - minimap_size - margin
+    
+    # Simple caching mechanism - store the base minimap surface
+    if not hasattr(draw_minimap, 'cache'):
+        draw_minimap.cache = {}
+    
+    cache_key = map_path
+    
+    try:
+        # Get or create the base minimap surface
+        if cache_key not in draw_minimap.cache:
+            print(f"Creating minimap cache for: {map_path}")
+            base_minimap = render_map_to_surface(map_path, minimap_size, minimap_size)
+            draw_minimap.cache[cache_key] = base_minimap
+        else:
+            base_minimap = draw_minimap.cache[cache_key]
+        
+        # Create a working copy for this frame
+        overlay = pygame.Surface((minimap_size, minimap_size))
+        overlay.set_alpha(200)  # Semi-transparent
+        overlay.fill((0, 0, 0))  # Black background
+        
+        # Blit the cached base map onto the overlay
+        base_minimap.set_alpha(180)
+        overlay.blit(base_minimap, (0, 0))
+        
+        # Calculate scale factors for positioning dots
+        if tmx_data:
+            scale_x = minimap_size / tmx_data.width
+            scale_y = minimap_size / tmx_data.height
+            
+            # Draw enemy positions as red dots
+            if 'level' in character_data and 'enemies' in character_data['level']:
+                for enemy in character_data['level']['enemies']:
+                    if 'position' in enemy:
+                        enemy_x = enemy['position'].get('x', 0)
+                        enemy_y = enemy['position'].get('y', 0)
+                        
+                        # Convert map coordinates to minimap coordinates
+                        dot_x = int(enemy_x * scale_x)
+                        dot_y = int(enemy_y * scale_y)
+                        
+                        # Draw red dot for enemy (with white border for visibility)
+                        pygame.draw.circle(overlay, WHITE, (dot_x, dot_y), 4)
+                        pygame.draw.circle(overlay, RED, (dot_x, dot_y), 3)
+            
+            # Draw player position as green dot
+            player_dot_x = int(player_x * scale_x)
+            player_dot_y = int(player_y * scale_y)
+            
+            # Draw green dot for player (with white border for visibility)
+            pygame.draw.circle(overlay, WHITE, (player_dot_x, player_dot_y), 5)
+            pygame.draw.circle(overlay, GREEN, (player_dot_x, player_dot_y), 4)
+        
+        # Draw the minimap on the main surface
+        surface.blit(overlay, (minimap_x, minimap_y))
+        
+        # Draw border around minimap
+        pygame.draw.rect(surface, WHITE, (minimap_x, minimap_y, minimap_size, minimap_size), 2)
+        
+        # Draw minimap title
+        font = pygame.font.SysFont('Arial', 14, bold=True)
+        title_text = font.render("Map", True, WHITE)
+        title_rect = title_text.get_rect(center=(minimap_x + minimap_size // 2, minimap_y - 10))
+        surface.blit(title_text, title_rect)
+        
+    except Exception as e:
+        print(f"Error drawing minimap: {e}")
+        # Draw a simple placeholder if minimap fails
+        placeholder = pygame.Surface((minimap_size, minimap_size))
+        placeholder.fill((50, 50, 50))
+        surface.blit(placeholder, (minimap_x, minimap_y))
+        pygame.draw.rect(surface, WHITE, (minimap_x, minimap_y, minimap_size, minimap_size), 2)
+        
+        # Draw error text
+        font = pygame.font.SysFont('Arial', 12)
+        error_text = font.render("Minimap Error", True, RED)
+        error_rect = error_text.get_rect(center=(minimap_x + minimap_size // 2, minimap_y + minimap_size // 2))
+        surface.blit(error_text, error_rect)

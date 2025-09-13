@@ -5,7 +5,7 @@ import sys
 
 import pytmx
 from src.map_config import MapConfig
-from src.ui import WIDTH, HEIGHT, WHITE, BLACK, DARK_GRAY, BLUE, LIGHT_BLUE, GREEN, RED, YELLOW, GRAY, HIGHLIGHT, draw_character_card
+from src.ui import WIDTH, HEIGHT, WHITE, BLACK, DARK_GRAY, BLUE, LIGHT_BLUE, GREEN, RED, YELLOW, GRAY, HIGHLIGHT, draw_character_card, draw_minimap
 from src.ui import calculate_card_height
 
 # Main game screen function
@@ -78,6 +78,7 @@ def map_screen(screen, character_data):
     # Load map configuration
     map_config = None
     tmx_data = None
+    map_path = None
 
     # Check if we have level information in character_data
     if 'level' in character_data:
@@ -485,6 +486,10 @@ def map_screen(screen, character_data):
 
         # Draw map border
         pygame.draw.rect(screen, (100, 100, 150), (map_area_x, map_area_y, map_area_width, map_area_height), 2)
+
+        # Draw minimap in bottom right corner (only when not in combat)
+        if tmx_data and map_path and not character_data.get('start_combat', False):
+            draw_minimap(screen, character_data, player_x, player_y, tmx_data, map_path)
 
         # Map title removed
 
