@@ -11,6 +11,12 @@
   "wall_tiles": [
     0
   ],
+  "music": {
+    "file": "music/dungeon_ambience.ogg",
+    "volume": 0.5,
+    "loops": -1,
+    "fade_in": true
+  },
   "player": {
     "name": "Dungeon Delver",
     "image": "images/player.png",

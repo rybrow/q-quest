@@ -3,10 +3,15 @@ import os
 import pygame
 import sys
 from src.ui import WIDTH, HEIGHT, WHITE, BLACK, DARK_GRAY, BLUE, LIGHT_BLUE, GREEN, RED, YELLOW, GRAY, HIGHLIGHT
+from src.music_manager import get_music_manager
 
 # Create a level selection screen
 def level_selection_screen(screen):
     """Display a screen to select a level"""
+    # Stop any currently playing music when entering level selection
+    music_manager = get_music_manager()
+    music_manager.stop_music(fade_out=True)
+    
     # Initialize Pygame if not already done
     if not pygame.get_init():
         pygame.init()

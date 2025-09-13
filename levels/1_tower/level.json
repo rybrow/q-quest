@@ -11,6 +11,12 @@
   "wall_tiles": [
     0
   ],
+  "music": {
+    "file": "music/tower_theme.ogg",
+    "volume": 0.6,
+    "loops": -1,
+    "fade_in": true
+  },
   "player": {
     "name": "Apprentice Mage",
     "image": "images/player.png",

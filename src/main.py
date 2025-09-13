@@ -1,11 +1,15 @@
 from src import loot_screen, title_screen, level_selection_screen, map_screen, combat_screen
 from src.ui import WIDTH, HEIGHT, WHITE, BLACK, DARK_GRAY, BLUE, LIGHT_BLUE, GREEN, RED, YELLOW, GRAY, HIGHLIGHT
+from src.music_manager import initialize_music_system
 import pygame
 
 
 # Initialize Pygame
 pygame.init()
 pygame.key.set_repeat(500, 50)  # Key repeat for text input
+
+# Initialize music system
+initialize_music_system()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Q-Quest!")

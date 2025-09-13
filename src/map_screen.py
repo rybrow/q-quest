@@ -7,11 +7,18 @@ import pytmx
 from src.map_config import MapConfig
 from src.ui import WIDTH, HEIGHT, WHITE, BLACK, DARK_GRAY, BLUE, LIGHT_BLUE, GREEN, RED, YELLOW, GRAY, HIGHLIGHT, draw_character_card
 from src.ui import calculate_card_height
+from src.music_manager import get_music_manager
 
 # Main game screen function
 def map_screen(screen, character_data):
     # Check if debug mode is enabled
     debug_mode = character_data.get('debug_mode', False)
+    
+    # Initialize music for the level
+    music_manager = get_music_manager()
+    level_data = character_data.get('level', {})
+    if level_data:
+        music_manager.load_and_play_level_music(level_data)
     
     if debug_mode:
         print("\n==== MAP SCREEN ====")
@@ -24,6 +31,11 @@ def map_screen(screen, character_data):
                 print(f"Level data keys: {character_data['level'].keys() if isinstance(character_data['level'], dict) else type(character_data['level'])}")
                 if isinstance(character_data['level'], dict) and 'enemies' in character_data['level']:
                     print(f"Enemies in level: {character_data['level']['enemies']}")
+                # Debug music information
+                if 'music' in character_data['level']:
+                    print(f"Level music config: {character_data['level']['music']}")
+                else:
+                    print("No music configuration found for level")
 
     """
     Display the map screen with the player card and a rendered tilemap
